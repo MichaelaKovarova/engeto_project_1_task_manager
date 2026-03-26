@@ -5,8 +5,8 @@ ukoly = []
 def pridat_ukol(ukoly):
     # cyklus pro zadání názvu
     while True:
-        novy = input("Zadejte název úkolu: ")
-        if novy:
+        nazev = input("Zadejte název úkolu: ")
+        if nazev:
             break
         print("Nezadal jste název úkolu.")
 
@@ -18,8 +18,8 @@ def pridat_ukol(ukoly):
         print("Nezadal jste popis úkolu.")
 
     # přidání do seznamu
-    ukoly.append(novy + " _ " + popis)
-    print(f"Úkol '{novy}' byl přidán")
+    ukoly.append({"Nazev": nazev, "Popis": popis})
+    print(f"Úkol '{nazev}' byl přidán")
 
 #funkce pro zobrazení seznamu úkolů
 def zobrazit_ukoly(seznam):
@@ -28,19 +28,28 @@ def zobrazit_ukoly(seznam):
       else:
          print("\nSeznam ukolů:")
          for i, ukol in enumerate(seznam, 1):
-            print(f"{i}. {ukol}")         
+            print(f"{i}. Název: {ukol['Nazev']}, Popis: {ukol['Popis']}")         
 
 #funkce pro odstranění úkolu
 def odstranit_ukol(ukoly):
-      for i, ukol in enumerate(ukoly,1):
-          print(f"{i}. {ukol}")
-      cislo = int(input("Zadejte číslo úkolu ke smazání: "))
-      if 1 <= cislo <= len (ukoly):
+      if not ukoly:
+            print("Žádné úkoly k odstranění")
+            return
+      
+      while True:
+        zobrazit_ukoly(ukoly)
+        try:
+         cislo = int(input("Zadejte číslo úkolu ke smazání: "))
+         if 1 <= cislo <= len(ukoly):
             odstraneny = ukoly.pop(cislo - 1)
-            print(f"Úkol {odstraneny} byl smazán")
-      else:
-          print("Neplatné číslo")                     
-                   
+            print(f"Úkol '{odstraneny['Nazev']}' byl smazán")
+            break
+         else:
+             print("Neplatné číslo, zadejte číslo mezi 1 a", len(ukoly))
+        except ValueError:
+          print("Neplatný vstup, zadejte číslo")                             
+    
+      
 def hlavni_menu():
     while True:
           print("\n Správce úkolů - Hlavní menu")
